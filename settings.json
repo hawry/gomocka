@@ -1,0 +1,21 @@
+{
+  "port": 8080,
+  "mocks": [
+    {
+      "path":"/",
+      "method":"GET",
+      "response_code": 200,
+      "response_body": "{\"hello\":\"world\"}",
+      "headers": {
+        "Content-Type":"application/json",
+        "x-trace-id": "thisisatrace"
+      }
+    },
+    {
+      "path":"/hello",
+      "method":"POST",
+      "response_code": 400,
+      "response_body":"bad something"
+    }
+  ]
+}
