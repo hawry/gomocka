@@ -14,6 +14,7 @@ A very lightweight and simple mocking service. The idea is that a JSON file conf
     - [Headers](#headers)
 - [Build from source](#build-from-source)
 - [Run in Docker](#run-in-docker)
+- [Roadmap](#roadmap)
 
 <!-- /TOC -->
 
@@ -66,6 +67,8 @@ Headers to set in the response. You can use any string as a header key, and any 
 
 ## Build from source
 
+Prerequisite: Go (https://www.golang.org), recommended minimum version is 1.10.
+
 Clone this repository and run `make static` to create statically linked binary without CGO. The created binary can then be used as part of the docker build process mentioned above.
 
 ## Run in Docker
@@ -73,7 +76,14 @@ Before you try to build the docker image, make sure you have compiled a statical
 
 The project contains a lightweight Dockerfile, which only should be about 12MB in size. To create the docker image; just run `docker build -t gock .` in the project directory. Modify `settings.json` before building to make sure the latest configuration is part of the docker image.
 
-To run the docker image: `docker run -d -p 8080:8080 gock`. Replace `8080` with the port number that you've specified in your `settings.json` file.
+To run the docker image: `docker run -d -p 8080:8080 gocks`. Replace `8080` with the port number that you've specified in your `settings.json` file.
+
+## Roadmap
+- [] TLS support
+- [] Load configuration from dynamic location without a build step
+- [] Handle authorization in mocked endpoints
+- [] Bind to specific network interface/address
+- [] Copy request data to response data (such as headers, etc.)
 
 
 [1]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
