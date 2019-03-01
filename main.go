@@ -16,14 +16,32 @@ import (
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
+var buildVersion string
+
 var (
-	config  = kingpin.Flag("config", "configuration file to create endpoints from").Short('c').Default("./settings.json").String()
-	verbose = kingpin.Flag("verbose", "enabled verbose logging. if --silent is used, --verbose will be ignore").Short('v').Default("false").Bool()
-	silent  = kingpin.Flag("silent", "disabled all output except for errors. overrides --verbose if set").Short('s').Default("false").Bool()
+	version        = kingpin.Flag("version", "print version of gock").Default("false").Bool()
+	config         = kingpin.Flag("config", "configuration file to create endpoints from").Short('c').Default("settings.json").String()
+	verbose        = kingpin.Flag("verbose", "enabled verbose logging. if --silent is used, --verbose will be ignore").Short('v').Default("false").Bool()
+	silent         = kingpin.Flag("silent", "disabled all output except for errors. overrides --verbose if set").Short('s').Default("false").Bool()
+	generateConfig = kingpin.Flag("generate", "generate a sample configuration").Short('g').Default("false").Bool()
 )
 
 func main() {
 	kingpin.Parse()
+
+	if *version {
+		fmt.Printf("gock version %s\n", buildVersion)
+		return
+	}
+
+	if *generateConfig {
+		if err := createDefault(); err != nil {
+			log.Fatal(err)
+		}
+		fmt.Printf("example configuration created at %s\n", defaultGeneratedFile)
+		return
+	}
+
 	initLogging()
 
 	f, err := os.Open(*config)

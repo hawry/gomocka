@@ -1,5 +1,7 @@
 OUT=gock
-LDLFLAGS=
+GITDESC=`git describe --always`
+GITCOUNT=`git rev-list --count --first-parent HEAD`
+LDFLAGS=-ldflags "-X main.buildVersion=$(GITDESC)-$(GITCOUNT)"
 RUNFLAGS=--verbose
 
 .PHONY: all

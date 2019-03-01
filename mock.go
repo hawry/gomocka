@@ -7,7 +7,8 @@ import (
 )
 
 const (
-	defaultPort = 8080
+	defaultPort          = 8080
+	defaultGeneratedFile = "example.json"
 )
 
 //Settings describe the settings.json file contents
@@ -42,4 +43,28 @@ func (s *Settings) Port() int {
 		return s.ListenPort
 	}
 	return defaultPort
+}
+
+func createDefault() error {
+	f, err := os.Create(defaultGeneratedFile)
+	if err != nil {
+		return err
+	}
+	s := Settings{
+		ListenPort: 8080,
+		Mocks: []Mock{
+			Mock{
+				Path:         "/",
+				Method:       "GET",
+				ResponseBody: "{\"hello\":\"world\"}",
+				ResponseCode: 200,
+				Headers: map[string]string{
+					"Content-Type": "application/json",
+				},
+			},
+		},
+	}
+	enc := json.NewEncoder(f)
+	enc.SetIndent("", "\t")
+	return enc.Encode(&s)
 }
