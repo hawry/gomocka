@@ -17,3 +17,6 @@ run:
 
 clean:
 	rm -rf ./$(OUT)
+
+static:
+	CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o $(OUT)s $(LDFLAGS)
