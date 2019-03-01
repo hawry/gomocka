@@ -2,6 +2,21 @@
 
 A very lightweight and simple mocking service. The idea is that a JSON file configures possible endpoints, and the service is either run locally or in a docker container.
 
+<!-- TOC depthFrom:2 -->
+
+- [Configuration](#configuration)
+  - [Port](#port)
+  - [Mocks](#mocks)
+    - [Path](#path)
+    - [Method](#method)
+    - [Response Code](#response-code)
+    - [Response Body](#response-body)
+    - [Headers](#headers)
+- [Build from source](#build-from-source)
+- [Run in Docker](#run-in-docker)
+
+<!-- /TOC -->
+
 ## Configuration
 
 ```json
@@ -49,7 +64,13 @@ String representation of the response body. The response body will be sent regar
 #### Headers
 Headers to set in the response. You can use any string as a header key, and any string as a header value.
 
+## Build from source
+
+Clone this repository and run `make static` to create statically linked binary without CGO. The created binary can then be used as part of the docker build process mentioned above.
+
 ## Run in Docker
+Before you try to build the docker image, make sure you have compiled a statically linked binary as explained above.
+
 The project contains a lightweight Dockerfile, which only should be about 12MB in size. To create the docker image; just run `docker build -t gock .` in the project directory. Modify `settings.json` before building to make sure the latest configuration is part of the docker image.
 
 To run the docker image: `docker run -d -p 8080:8080 gock`. Replace `8080` with the port number that you've specified in your `settings.json` file.

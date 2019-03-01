@@ -1,4 +1,4 @@
-OUT=gock
+OUT=gocks
 GITDESC=`git describe --always`
 GITCOUNT=`git rev-list --count --first-parent HEAD`
 LDFLAGS=-ldflags "-X main.buildVersion=$(GITDESC)-$(GITCOUNT)"
@@ -19,4 +19,4 @@ clean:
 	rm -rf ./$(OUT)
 
 static:
-	CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o $(OUT)s $(LDFLAGS)
+	CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o $(OUT) $(LDFLAGS)
