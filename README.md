@@ -94,7 +94,7 @@ Clone this repository and run `make static` to create statically linked binary w
 ## Run in Docker
 Before you try to build the docker image, make sure you have compiled a statically linked binary as explained above.
 
-The project contains a lightweight Dockerfile, which only should be about 12MB in size. To create the docker image; just run `docker build -t gock .` in the project directory. Modify `settings.json` before building to make sure the latest configuration is part of the docker image.
+The project contains a lightweight Dockerfile, which only should be about 12MB in size. To create the docker image; just run `docker build -t gocks .` in the project directory. Modify `settings.json` before building to make sure the latest configuration is part of the docker image.
 
 To run the docker image: `docker run -d -p 8080:8080 gocks`. Replace `8080` with the port number that you've specified in your `settings.json` file.
 
