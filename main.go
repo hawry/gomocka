@@ -36,7 +36,7 @@ func main() {
 
 	if *generateConfig {
 		if err := createDefault(); err != nil {
-			log.Fatal(err)
+			log.Fatalf("error: %v", err)
 		}
 		fmt.Printf("example configuration created at %s\n", defaultGeneratedFile)
 		return
@@ -46,11 +46,11 @@ func main() {
 
 	f, err := os.Open(*config)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("error: %v", err)
 	}
 	settings, err := NewSettings(f)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("error: %v", err)
 	}
 
 	r := mux.NewRouter()
@@ -69,7 +69,10 @@ func main() {
 		}
 	}()
 	log.Printf("info: starting server at %s", srv.Addr)
-	srv.ListenAndServe()
+	err = srv.ListenAndServe()
+	if err.Error() != "http: Server closed" {
+		log.Fatalf("error: %v", err)
+	}
 }
 
 func setupHandlers(s *Settings, r *mux.Router) {
