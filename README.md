@@ -4,6 +4,8 @@ A very lightweight and simple mocking service. The idea is that a JSON file conf
 
 <!-- TOC depthFrom:2 -->
 
+- [Getting started](#getting-started)
+  - [gocks --help](#gocks---help)
 - [Configuration](#configuration)
   - [Port](#port)
   - [Mocks](#mocks)
@@ -17,6 +19,24 @@ A very lightweight and simple mocking service. The idea is that a JSON file conf
 - [Roadmap](#roadmap)
 
 <!-- /TOC -->
+
+## Getting started
+Download or clone this repository and build the code (requires [Go][2]). Create a settings file according to the configuration part of this documentation, or create a sample configuration file by running `gocks -g`.
+
+Start the mock server: `gocks`. By default, the application will look for a configuration file named `settings.json` in the current working dir. To change configuration file use the `--config` flag: `gocks --config=./example.json`.
+
+### gocks --help
+```
+usage: gocks [<flags>]
+
+Flags:
+      --help                    Show context-sensitive help (also try --help-long and --help-man).
+      --version                 print version of gock
+  -c, --config="settings.json"  configuration file to create endpoints from
+  -v, --verbose                 enabled verbose logging. if --silent is used, --verbose will be ignore
+  -s, --silent                  disabled all output except for errors. overrides --verbose if set
+  -g, --generate                generate a sample configuration
+```
 
 ## Configuration
 
@@ -67,7 +87,7 @@ Headers to set in the response. You can use any string as a header key, and any 
 
 ## Build from source
 
-Prerequisite: Go (https://www.golang.org), recommended minimum version is 1.10.
+Prerequisite: [Go][2], recommended minimum version is 1.10.
 
 Clone this repository and run `make static` to create statically linked binary without CGO. The created binary can then be used as part of the docker build process mentioned above.
 
@@ -87,3 +107,4 @@ To run the docker image: `docker run -d -p 8080:8080 gocks`. Replace `8080` with
 
 
 [1]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
+[2]: https://www.golang.org
