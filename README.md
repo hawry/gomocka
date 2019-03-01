@@ -79,11 +79,11 @@ The project contains a lightweight Dockerfile, which only should be about 12MB i
 To run the docker image: `docker run -d -p 8080:8080 gocks`. Replace `8080` with the port number that you've specified in your `settings.json` file.
 
 ## Roadmap
-- [] TLS support
-- [] Load configuration from dynamic location without a build step
-- [] Handle authorization in mocked endpoints
-- [] Bind to specific network interface/address
-- [] Copy request data to response data (such as headers, etc.)
+- [ ] TLS support
+- [ ] Load configuration from dynamic location without a build step
+- [ ] Handle authorization in mocked endpoints
+- [ ] Bind to specific network interface/address
+- [ ] Copy request data to response data (such as headers, etc.)
 
 
 [1]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
