@@ -1,4 +1,4 @@
-OUT=gocks
+OUT=gomocka
 GITDESC=`git describe --always`
 GITCOUNT=`git rev-list --count --first-parent HEAD`
 LDFLAGS=-ldflags "-X main.buildVersion=$(GITDESC)-$(GITCOUNT)"
