@@ -2,20 +2,26 @@
   "port": 8080,
   "mocks": [
     {
-      "path":"/",
-      "method":"GET",
+      "path":"/resource",
+      "method": "GET",
       "response_code": 200,
-      "response_body": "{\"hello\":\"world\"}",
-      "headers": {
-        "Content-Type":"application/json",
-        "x-trace-id": "thisisatrace"
-      }
+      "response_body": "this is a hard coded response"
     },
     {
-      "path":"/hello",
-      "method":"POST",
-      "response_code": 400,
-      "response_body":"bad something"
+      "path":"/users/{userid}",
+      "method":"GET",
+      "response_code": 200,
+      "response_body": "your id is {userid}"
+    },
+    {
+      "path":"/withheaders",
+      "method":"GET",
+      "response_code": 200,
+      "response_body": "a hardcoded response",
+      "headers": {
+        "Content-Type": "application/json",
+        "X-Custom-Header": "custom-header"
+      }
     }
   ]
 }

@@ -1,4 +1,4 @@
-package main
+package settings
 
 import (
 	"encoding/json"
@@ -17,17 +17,8 @@ type Settings struct {
 	Mocks      []Mock `json:"mocks"`
 }
 
-// Mock describes what path that should return what status & body
-type Mock struct {
-	Path         string            `json:"path"`
-	Method       string            `json:"method"`
-	ResponseCode int               `json:"response_code"`
-	ResponseBody string            `json:"response_body"`
-	Headers      map[string]string `json:"headers"`
-}
-
-// NewSettings returns a new settings file containing the endpoints to mock
-func NewSettings(f *os.File) (s *Settings, err error) {
+//New returns a new configuration from the given file
+func New(f *os.File) (s *Settings, err error) {
 	b, err := ioutil.ReadAll(f)
 	if err != nil {
 		return
@@ -37,7 +28,7 @@ func NewSettings(f *os.File) (s *Settings, err error) {
 	return
 }
 
-// Port returns the set port number or returns the default port if none is set
+//Port returns the port number from the configuration, or a default port number if not set
 func (s *Settings) Port() int {
 	if s.ListenPort > 0 {
 		return s.ListenPort
@@ -45,10 +36,11 @@ func (s *Settings) Port() int {
 	return defaultPort
 }
 
-func createDefault() error {
+//CreateDefault creates a default configuration and returns the struct representation as well, default filename is example.json
+func CreateDefault() (*Settings, error) {
 	f, err := os.Create(defaultGeneratedFile)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	s := Settings{
 		ListenPort: 8080,
@@ -62,9 +54,16 @@ func createDefault() error {
 					"Content-Type": "application/json",
 				},
 			},
+			Mock{
+				Path:         "/users/{userid}",
+				Method:       "GET",
+				ResponseBody: "{\"user\":\"{userid}\"}",
+				ResponseCode: 200,
+			},
 		},
 	}
 	enc := json.NewEncoder(f)
 	enc.SetIndent("", "\t")
-	return enc.Encode(&s)
+	err = enc.Encode(&s)
+	return &s, err
 }
