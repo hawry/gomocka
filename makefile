@@ -1,5 +1,5 @@
 OUT=gomocka
-GITDESC=`git describe --always`
+GITDESC=`git describe --always --tags`
 GITCOUNT=`git rev-list --count --first-parent HEAD`
 LDFLAGS=-ldflags "-X main.buildVersion=$(GITDESC)-$(GITCOUNT)"
 RUNFLAGS=--verbose
