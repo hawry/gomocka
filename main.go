@@ -10,6 +10,7 @@ import (
 	"syscall"
 
 	"github.com/gorilla/mux"
+	"github.com/hawry/gomocka/settings"
 
 	"comail.io/go/colog"
 
@@ -35,10 +36,10 @@ func main() {
 	}
 
 	if *generateConfig {
-		if err := createDefault(); err != nil {
+		if _, err := settings.CreateDefault(); err != nil {
 			log.Fatalf("error: %v", err)
 		}
-		fmt.Printf("example configuration created at %s\n", defaultGeneratedFile)
+		fmt.Printf("example configuration created\n")
 		return
 	}
 
@@ -48,7 +49,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("error: %v", err)
 	}
-	settings, err := NewSettings(f)
+	settings, err := settings.New(f)
 	if err != nil {
 		log.Fatalf("error: %v", err)
 	}
@@ -75,12 +76,13 @@ func main() {
 	}
 }
 
-func setupHandlers(s *Settings, r *mux.Router) {
+func setupHandlers(s *settings.Settings, r *mux.Router) {
 	for _, m := range s.Mocks {
-		f := createHandler(m.ResponseCode, m.ResponseBody, m.Headers)
+		f := createHandler(m.ResponseCode, m.ResponseBody, m.Headers, m)
 		r.HandleFunc(m.Path, f).Methods(m.Method)
 		log.Printf("debug: creating mock for %s %s - returning %d, %s using %v", m.Method, m.Path, m.ResponseCode, m.ResponseBody, f)
 	}
+	log.Printf("info: registered %d paths", len(s.Mocks))
 }
 
 func initLogging() {
@@ -97,4 +99,8 @@ func initLogging() {
 		colog.SetMinLevel(colog.LInfo)
 	}
 	log.Printf("debug: enable verbose logging")
+}
+
+func doStuff() {
+	log.Printf("this is only here to test cover report")
 }

@@ -14,6 +14,10 @@ A very lightweight and simple mocking service. The idea is that a JSON file conf
     - [Response Code](#response-code)
     - [Response Body](#response-body)
     - [Headers](#headers)
+- [Examples](#examples)
+  - [Hard coded response](#hard-coded-response)
+  - [Dynamic response](#dynamic-response)
+  - [With response headers](#with-response-headers)
 - [Build from source](#build-from-source)
 - [Run in Docker](#run-in-docker)
 - [Roadmap](#roadmap)
@@ -84,6 +88,83 @@ String representation of the response body. The response body will be sent regar
 
 #### Headers
 Headers to set in the response. You can use any string as a header key, and any string as a header value.
+
+## Examples
+
+### Hard coded response
+
+```json
+"mocks": [
+  {
+    "path":"/resource",
+    "method": "GET",
+    "response_code": 200,
+    "response_body": "this is a hard coded response"
+  }
+]
+```
+
+```
+$ curl localhost:8080/resource -i
+
+HTTP/1.1 200 OK
+Date: Sat, 02 Mar 2019 13:12:41 GMT
+Content-Length: 29
+Content-Type: text/plain; charset=utf-8
+
+this is a hard coded response
+```
+
+### Dynamic response
+```json
+"mocks": [
+  {
+    "path":"/users/{userid}",
+    "method":"GET",
+    "response_code": 200,
+    "response_body": "your id is {userid}"
+  }
+]
+```
+
+```
+$ curl localhost:8080/users/1337 -i
+
+HTTP/1.1 200 OK
+Date: Sat, 02 Mar 2019 13:14:34 GMT
+Content-Length: 15
+Content-Type: text/plain; charset=utf-8
+
+your id is 1337
+```
+
+### With response headers
+```json
+"mocks": [
+  {
+    "path":"/withheaders",
+    "method":"GET",
+    "response_code": 200,
+    "response_body": "a hardcoded response",
+    "headers": {
+      "Content-Type": "application/json",
+      "X-Custom-Header": "custom-header"
+    }
+  }
+]
+```
+
+```
+$ curl localhosi:8080/withheaders -i
+
+HTTP/1.1 200 OK
+Content-Type: application/json
+X-Custom-Header: custom-header
+Date: Sat, 02 Mar 2019 13:15:52 GMT
+Content-Length: 20
+
+a hardcoded response
+```
 
 ## Build from source
 

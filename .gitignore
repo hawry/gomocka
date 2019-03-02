@@ -6,3 +6,6 @@ gocks.exe
 .idea
 .project
 .settings
+
+# hide coverage reports
+cover*
