@@ -1,4 +1,4 @@
 FROM scratch
-ADD ./gocks /
+ADD ./gomocka /
 ADD ./settings.json /
-CMD ["/gocks"]
+CMD ["/gomocka"]
