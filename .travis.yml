@@ -1,4 +1,7 @@
 language: go
 go:
 - 1.12.x
-install: make travis
+install:
+- go get -u -v -t ./...
+script:
+- go test -v ./...

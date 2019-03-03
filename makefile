@@ -5,7 +5,7 @@ GITCOUNT=`git rev-list --count --first-parent HEAD`
 LDFLAGS=-ldflags "-X main.buildVersion=$(GITDESC)-$(GITCOUNT)"
 RUNFLAGS=--verbose
 
-.PHONY: all static
+.PHONY:
 .SILENT:
 
 all: build run
@@ -18,10 +18,6 @@ run:
 
 clean:
 	rm -rf ./$(OUT)
-
-travis:
-	go get -u -v -t ./...; \
-	go test ./... -v;
 
 test:
 	go test ./... -v
