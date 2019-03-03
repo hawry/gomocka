@@ -22,6 +22,10 @@ clean:
 test:
 	go test ./... -v
 
+release: static
+	mkdir -p build; \
+	tar -cvzf ./build/gomocka-linux-amd64.tar.gz $(OUT)
+
 static:
 	CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o $(OUT) $(LDFLAGS)
 

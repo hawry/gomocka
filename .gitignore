@@ -9,3 +9,6 @@ gocks.exe
 
 # hide coverage reports
 cover*
+
+# hide build artifacts
+build/
