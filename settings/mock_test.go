@@ -1,19 +1,20 @@
 package settings
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
 
 func TestSingleWildcard(t *testing.T) {
 	m := Mock{
 		Path: "/user/{userid}",
 	}
 	b, s := m.Wildcard()
-	if !b || (len(s) != 1) {
-		t.Fail()
-	}
+	assert.True(t, b, "should be true")
+	assert.Len(t, s, 1, "should have length 1")
 	for _, v := range s {
-		if v != "userid" {
-			t.Fail()
-		}
+		assert.Equal(t, "userid", v, "should be equal")
 	}
 }
 
@@ -22,9 +23,8 @@ func TestMultipleWildcard(t *testing.T) {
 		Path: "/user/{userid}/{more}",
 	}
 	b, s := m.Wildcard()
-	if !b || (len(s) != 2) {
-		t.Fail()
-	}
+	assert.True(t, b)
+	assert.Len(t, s, 2)
 	for _, v := range s {
 		if v != "userid" && v != "more" {
 			t.Fail()
