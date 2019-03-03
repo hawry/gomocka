@@ -1,5 +1,15 @@
 {
   "port": 8080,
+  "authorization": {
+    "basic_auth": {
+      "username":"user",
+      "password":"pass"
+    },
+    "header": {
+      "x-api-key": "GD+6fJCdCYObdZt4oK+yvK/rsnY2LFUxNayBYxDUu34=",
+      "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImp0aSI6IjZhZjcwZTkxLWE2OGMtNDk3Ny1iZjRkLTYyYTgzNWJlZTRhMCIsImlhdCI6MTU1MTYzODMzMSwiZXhwIjoxNTUxNjQxOTMxfQ.6vo3Jgsrac7cn3V-RUNWWeTPPQFmpWJXhyNoRIp-FyE"
+    }
+  },
   "mocks": [
     {
       "path":"/resource",

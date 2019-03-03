@@ -10,6 +10,9 @@ A very lightweight and simple mocking service. The idea is that a JSON file conf
   - [gomocka --help](#gomocka---help)
 - [Configuration](#configuration)
   - [Port](#port)
+  - [Authorization](#authorization)
+    - [Basic Auth](#basic-auth)
+    - [Header](#header)
   - [Mocks](#mocks)
     - [Path](#path)
     - [Method](#method)
@@ -20,6 +23,9 @@ A very lightweight and simple mocking service. The idea is that a JSON file conf
   - [Hard coded response](#hard-coded-response)
   - [Dynamic response](#dynamic-response)
   - [With response headers](#with-response-headers)
+  - [Authorization: bearer token](#authorization-bearer-token)
+  - [Authorization: custom header](#authorization-custom-header)
+  - [Authorization: basic auth](#authorization-basic-auth)
 - [Build from source](#build-from-source)
 - [Run in Docker](#run-in-docker)
 - [Roadmap](#roadmap)
@@ -49,6 +55,15 @@ Flags:
 ```json
 {
   "port": 8080,
+  "authorization": {
+    "basic_auth": {
+      "username":"ausername",
+      "password":"apassword",
+    },
+    "header": {
+      "Authorization": "Bearer thisisatoken"
+    }
+  },
   "mocks": [
     {
       "path":"/",
@@ -72,6 +87,15 @@ Flags:
 
 ### Port
 Port to listen to. The service automatically binds to `0.0.0.0:<port>`.
+
+### Authorization
+Authorization configurations required for all paths. Use either only one of the possible configurations, or all of them.
+
+#### Basic Auth
+Basic authentication data in the form of `username` and `password`.
+
+#### Header
+Header key and value, which both can be completely customized.
 
 ### Mocks
 Array of what paths to respond to.
@@ -168,6 +192,51 @@ Content-Length: 20
 a hardcoded response
 ```
 
+### Authorization: bearer token
+```json
+{
+  "authorization": {
+    "header": {
+      "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImp0aSI6IjZhZjcwZTkxLWE2OGMtNDk3Ny1iZjRkLTYyYTgzNWJlZTRhMCIsImlhdCI6MTU1MTYzODMzMSwiZXhwIjoxNTUxNjQxOTMxfQ.6vo3Jgsrac7cn3V-RUNWWeTPPQFmpWJXhyNoRIp-FyE"
+    }
+  }
+}
+```
+
+```
+$ curl -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImp0aSI6IjZhZjcwZTkxLWE2OGMtNDk3Ny1iZjRkLTYyYTgzNWJlZTRhMCIsImlhdCI6MTU1MTYzODMzMSwiZXhwIjoxNTUxNjQxOTMxfQ.6vo3Jgsrac7cn3V-RUNWWeTPPQFmpWJXhyNoRIp-FyE" localhost:8080/resource -i
+```
+
+### Authorization: custom header
+```json
+{
+  "authorization": {
+    "header": {
+      "x-api-key": "GD+6fJCdCYObdZt4oK+yvK/rsnY2LFUxNayBYxDUu34="
+    }
+  }
+}
+```
+
+```
+$ curl -H "x-api-key: GD+6fJCdCYObdZt4oK+yvK/rsnY2LFUxNayBYxDUu34=" localhost:8080/resource -i
+```
+
+### Authorization: basic auth
+```json
+{
+  "authorization": {
+    "basic_auth": {
+      "username": "user",
+      "password": "pass"
+    }
+  }
+}
+```
+```
+$ curl --user user:pass localhost:8080/resource -i
+```
+
 ## Build from source
 
 Prerequisite: [Go][2], recommended minimum version is 1.10.
@@ -184,7 +253,7 @@ To run the docker image: `docker run -d -p 8080:8080 gomocka`. Replace `8080` wi
 ## Roadmap
 - [ ] TLS support
 - [ ] Load configuration from dynamic location without a build step
-- [ ] Handle authorization in mocked endpoints
+- [x] Handle authorization in mocked endpoints
 - [ ] Bind to specific network interface/address
 - [ ] Copy request data to response data (such as headers, etc.)
 

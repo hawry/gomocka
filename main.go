@@ -78,7 +78,7 @@ func main() {
 
 func setupHandlers(s *settings.Settings, r *mux.Router) {
 	for _, m := range s.Mocks {
-		f := createHandler(m.ResponseCode, m.ResponseBody, m.Headers, m)
+		f := createHandler(m.ResponseCode, m.ResponseBody, m.Headers, m, *s)
 		r.HandleFunc(m.Path, f).Methods(m.Method)
 		log.Printf("debug: creating mock for %s %s - returning %d, %s using %v", m.Method, m.Path, m.ResponseCode, m.ResponseBody, f)
 	}
