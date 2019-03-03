@@ -12,8 +12,16 @@ import (
 
 var availableHandlers []http.HandlerFunc
 
-func createHandler(code int, body string, headers map[string]string, m settings.Mock) http.HandlerFunc {
+func createHandler(code int, body string, headers map[string]string, m settings.Mock, s settings.Settings) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		if s.RequireAuthentication() {
+			u, p, _ := r.BasicAuth()
+			if !s.VerifyBasicAuth(u, p) && !s.VerifyHeaderAuth(r.Header) {
+				w.WriteHeader(http.StatusUnauthorized)
+				return
+			}
+		}
+
 		b, wc := m.Wildcard()
 		if b {
 			vars := mux.Vars(r)

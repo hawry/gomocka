@@ -3,6 +3,7 @@ package settings
 import (
 	"encoding/json"
 	"io/ioutil"
+	"net/http"
 	"os"
 )
 
@@ -13,8 +14,21 @@ const (
 
 //Settings describe the settings.json file contents
 type Settings struct {
-	ListenPort int    `json:"port"`
-	Mocks      []Mock `json:"mocks"`
+	ListenPort    int      `json:"port"`
+	Authorization AuthData `json:"authorization,omitempty"`
+	Mocks         []Mock   `json:"mocks"`
+}
+
+// AuthData describes the possible authorization headers required
+type AuthData struct {
+	Basic  BasicAuth         `json:"basic_auth"`
+	Header map[string]string `json:"header"`
+}
+
+//BasicAuth contains username/password field in settings file
+type BasicAuth struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
 }
 
 //New returns a new configuration from the given file
@@ -34,6 +48,25 @@ func (s *Settings) Port() int {
 		return s.ListenPort
 	}
 	return defaultPort
+}
+
+//VerifyBasicAuth returns true if username & password matches the settings file
+func (s *Settings) VerifyBasicAuth(username, password string) bool {
+	return (s.Authorization.Basic.Username == username && s.Authorization.Basic.Password == password)
+}
+
+func (s *Settings) VerifyHeaderAuth(h http.Header) bool {
+	for k, v := range s.Authorization.Header {
+		if h.Get(k) == v {
+			return true
+		}
+	}
+	return false
+}
+
+//RequireAuthentication returns true if the settings require authentication to be provided, or false if not
+func (s *Settings) RequireAuthentication() bool {
+	return (len(s.Authorization.Basic.Password) > 0 && len(s.Authorization.Basic.Username) > 0) || (len(s.Authorization.Header) > 0)
 }
 
 //CreateDefault creates a default configuration and returns the struct representation as well, default filename is example.json
