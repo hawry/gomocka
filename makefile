@@ -20,7 +20,7 @@ clean:
 	rm -rf ./$(OUT)
 
 travis:
-	go get -u -v ./...; \
+	go get -u -v -t ./...; \
 	go test ./... -v;
 	make static
 
