@@ -22,7 +22,6 @@ clean:
 travis:
 	go get -u -v -t ./...; \
 	go test ./... -v;
-	make static
 
 test:
 	go test ./... -v
