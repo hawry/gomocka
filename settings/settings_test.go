@@ -26,6 +26,13 @@ const (
 	settingsWithoutAuth = `{
 		"port": 8080
 		}`
+	settingsWithOpenIDAuth = `{
+		 "authorization": {
+			"openid": {
+				"jwks":"http://localhost/.well-known/openid-configuration"
+			}
+		 }
+		}`
 )
 
 func toStruct(js string) *Settings {
@@ -54,6 +61,13 @@ func TestRequireAuthentication_HeaderAuth(t *testing.T) {
 func TestRequireAuthentication_NoAuth(t *testing.T) {
 	sut := toStruct(settingsWithoutAuth)
 	if sut.RequireAuthentication() {
+		t.Fail()
+	}
+}
+
+func TestRequireAuthentication_OpenIDAuth(t *testing.T) {
+	sut := toStruct(settingsWithOpenIDAuth)
+	if !sut.RequireAuthentication() {
 		t.Fail()
 	}
 }
@@ -88,6 +102,16 @@ func TestVerifyHeaderAuth_IncorrectData(t *testing.T) {
 	r.Header.Add("x-api-key", "thisiswrongheader")
 	sut := toStruct(settingsWithHeaderAuth)
 	if sut.VerifyHeaderAuth(r.Header) {
+		t.Fail()
+	}
+}
+
+func TestVerifyOpenIDAuth_IncorrectData(t *testing.T) {
+	r := &http.Request{}
+	r.Header = http.Header{}
+	r.Header.Add("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.dozjgNryP4J3jVmNHl0w5N_XgL0n3I9PlFUP0THsR8U")
+	sut := toStruct(settingsWithOpenIDAuth)
+	if sut.VerifyOpenIDAuth(r.Header) {
 		t.Fail()
 	}
 }

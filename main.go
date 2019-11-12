@@ -31,7 +31,7 @@ func main() {
 	kingpin.Parse()
 
 	if *version {
-		fmt.Printf("gock version %s\n", buildVersion)
+		fmt.Printf("gomocka version %s\n", buildVersion)
 		return
 	}
 
