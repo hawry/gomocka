@@ -16,7 +16,7 @@ func createHandler(code int, body string, headers map[string]string, m settings.
 	return func(w http.ResponseWriter, r *http.Request) {
 		if s.RequireAuthentication() {
 			u, p, _ := r.BasicAuth()
-			if !s.VerifyBasicAuth(u, p) && !s.VerifyHeaderAuth(r.Header) {
+			if !s.VerifyBasicAuth(u, p) && !s.VerifyHeaderAuth(r.Header) && !s.VerifyOpenIDAuth(r.Header) {
 				w.WriteHeader(http.StatusUnauthorized)
 				return
 			}
