@@ -46,12 +46,17 @@ Start the mock server: `gomocka`. By default, the application will look for a co
 usage: gomocka [<flags>]
 
 Flags:
-      --help                    Show context-sensitive help (also try --help-long and --help-man).
+      --help                    Show context-sensitive help (also try
+                                --help-long and --help-man).
       --version                 print version of gock
   -c, --config="settings.json"  configuration file to create endpoints from
-  -v, --verbose                 enabled verbose logging. if --silent is used, --verbose will be ignore
-  -s, --silent                  disabled all output except for errors. overrides --verbose if set
+  -v, --verbose                 enabled verbose logging. if --silent is used,
+                                --verbose will be ignore
+  -s, --silent                  disabled all output except for errors. overrides
+                                --verbose if set
   -g, --generate                generate a sample configuration
+  -d, --gendocker               generates a docker file - specify the config
+                                file to add with the flag --config
 ```
 
 ## Configuration
