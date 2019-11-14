@@ -295,7 +295,7 @@ Clone this repository and run `make static` to create statically linked binary w
 
 Before you try to build the docker image, make sure you have compiled a statically linked binary as explained above.
 
-The project contains a lightweight Dockerfile, which only should be about 12MB in size. To create the docker image; just run `docker build -t gomocka .` in the project directory. Modify `settings.json` before building to make sure the latest configuration is part of the docker image.
+To generate the dockerfile just run `gomocka --gendocker --config settings.json` which will create a default dockerfile in the project root. If you wish to use another settings file, just specify that with the `--config` flag. The dockerfile will bundle the settings-file in the docker image, and if you make any changes you'll need to rebuild the docker image.
 
 To run the docker image: `docker run -d -p 8080:8080 gomocka`. Replace `8080` with the port number that you've specified in your `settings.json` file.
 

@@ -10,6 +10,7 @@ import (
 	"syscall"
 
 	"github.com/gorilla/mux"
+	"github.com/hawry/gomocka/internal/docker"
 	"github.com/hawry/gomocka/settings"
 
 	"comail.io/go/colog"
@@ -20,11 +21,12 @@ import (
 var buildVersion string
 
 var (
-	version        = kingpin.Flag("version", "print version of gock").Default("false").Bool()
-	config         = kingpin.Flag("config", "configuration file to create endpoints from").Short('c').Default("settings.json").String()
-	verbose        = kingpin.Flag("verbose", "enabled verbose logging. if --silent is used, --verbose will be ignore").Short('v').Default("false").Bool()
-	silent         = kingpin.Flag("silent", "disabled all output except for errors. overrides --verbose if set").Short('s').Default("false").Bool()
-	generateConfig = kingpin.Flag("generate", "generate a sample configuration").Short('g').Default("false").Bool()
+	version            = kingpin.Flag("version", "print version of gock").Default("false").Bool()
+	config             = kingpin.Flag("config", "configuration file to create endpoints from").Short('c').Default("settings.json").String()
+	verbose            = kingpin.Flag("verbose", "enabled verbose logging. if --silent is used, --verbose will be ignore").Short('v').Default("false").Bool()
+	silent             = kingpin.Flag("silent", "disabled all output except for errors. overrides --verbose if set").Short('s').Default("false").Bool()
+	generateConfig     = kingpin.Flag("generate", "generate a sample configuration").Short('g').Default("false").Bool()
+	generateDockerFile = kingpin.Flag("gendocker", "generates a docker file - specify the config file to add with the flag --config").Short('d').Default("false").Bool()
 )
 
 func main() {
@@ -44,6 +46,14 @@ func main() {
 	}
 
 	initLogging()
+
+	if *generateDockerFile {
+		log.Printf("info: generating docker file with the configuration %s", *config)
+		if err := docker.Create(*config); err != nil {
+			log.Fatal(err)
+		}
+		return
+	}
 
 	f, err := os.Open(*config)
 	if err != nil {

@@ -15,3 +15,6 @@ cover*
 
 # hide build artifacts
 build/
+
+# hide generated files
+dockerfile
